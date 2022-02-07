@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    We are using Node.js <span id="node-version"></span>, Chromium
+    <span id="chrome-version"></span>, and Electron
+    <span id="electron-version"></span>.
+
+    <div id="event"></div>
+  </body>
+  <script>
+    const electron = require("electron");
+    const { ipcRenderer } = electron;
+
+    const div = document.getElementById("event");
+
+    ipcRenderer.on("update", (_e, payload) => {
+      console.log("mmmm");
+      div.innerText = payload;
+    });
+  </script>
+</html>
