@@ -49,7 +49,7 @@ const createWindow = () => {
       contextIsolation: false,
     },
   });
-  win.loadFile("index.html");
+  win.loadURL("http://localhost:3000");
 };
 
 const createPopupWindow = () => {
