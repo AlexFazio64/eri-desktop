@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { get, ref, set, onValue } from 'firebase/database';
-	import { onMount } from 'svelte';
+	import { beforeUpdate, onMount } from 'svelte';
 	import { CREDENTIALS, DB } from '../stores/global';
 
 	let result = '';
@@ -16,14 +16,15 @@
 		await set(ref($DB, `users/${$CREDENTIALS.user.displayName}`), value);
 	};
 
-	onMount(() => {
-		onValue(ref($DB, `users/${$CREDENTIALS.user.displayName}`), (data) => {
-			result = data.exists() ? data.val() : result;
-		});
+	beforeUpdate(() => {
+		if ($CREDENTIALS != undefined)
+			onValue(ref($DB, `users/${$CREDENTIALS.user.displayName}`), (data) => {
+				result = data.exists() ? data.val() : result;
+			});
 	});
 </script>
 
-<p>users/{$CREDENTIALS.user.displayName}</p>
+<p>users/</p>
 <form id="set" on:submit|preventDefault={write}>
 	<div>
 		<input type="submit" value="set" />

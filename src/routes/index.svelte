@@ -1,58 +1,14 @@
-<!-- <script context="module">
-	export async function load({ fetch }) {
-		const res = await fetch('/api');
-
-		if (res.ok) return { props: { users: await res.json() } };
-		return {
-			status: res.status,
-			error: new Error()
-		};
-	}
-</script> -->
 <script lang="ts">
-	import { initializeApp } from 'firebase/app';
-	import { AUTH, CREDENTIALS, DB } from '../stores/global';
-	import {
-		signInWithPopup,
-		onAuthStateChanged,
-		getAuth,
-		GoogleAuthProvider,
-	} from 'firebase/auth';
-	import { getDatabase } from 'firebase/database';
+	import { AUTH, CREDENTIALS } from '../stores/global';
 	import { goto } from '$app/navigation';
-
-	const firebaseConfig = {
-		apiKey: 'AIzaSyDT8ZVGhNpfpngnnPB4UMcJB9s76GvpWFA',
-		authDomain: 'eri-computer-assistant.firebaseapp.com',
-		databaseURL: 'https://eri-computer-assistant-default-rtdb.europe-west1.firebasedatabase.app',
-		projectId: 'eri-computer-assistant',
-		storageBucket: 'eri-computer-assistant.appspot.com',
-		messagingSenderId: '160025218403',
-		appId: '1:160025218403:web:73c3f2d3fc6c6bad995756',
-		measurementId: 'G-2SDNWGVEDV'
-	};
-
-	const app = initializeApp(firebaseConfig);
-	const auth = getAuth(app);
-	const database = getDatabase(app);
-	DB.set(database);
-	AUTH.set(auth);
+	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 	const login = () => {
-		signInWithPopup(auth, new GoogleAuthProvider()).then((cred) => {
+		signInWithPopup($AUTH, new GoogleAuthProvider()).then((cred) => {
 			CREDENTIALS.set(cred);
 			goto('./authorized');
 		});
 	};
-
-	onAuthStateChanged(auth, (user) => {
-		if (user) {
-			const uid = user.providerData[0].uid;
-			console.log(`Hello `, uid);
-		} else {
-			console.log('is anyone there?');
-		}
-	});
 </script>
 
 <main>
@@ -86,7 +42,9 @@
 
 <style>
 	main {
-		padding: 3em;
+		width: 100vw;
+		height: 100vh;
+		/* padding: 3em; */
 		display: flex;
 		align-items: center;
 		justify-content: center;
