@@ -1,10 +1,11 @@
 import { writable } from 'svelte/store';
-import type { Auth } from 'firebase/auth';
+import type { Auth, User } from 'firebase/auth';
 import type { Database } from 'firebase/database';
 
 export const DB = writable<Database>();
 export const AUTH = writable<Auth>();
-export const CREDENTIALS = writable<any>();
+export const CREDENTIALS = writable<User>();
+export const ID = writable<string>();
 
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';

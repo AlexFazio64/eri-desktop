@@ -1,25 +1,26 @@
 <script lang="ts">
 	import { signOut } from 'firebase/auth';
 	import { goto } from '$app/navigation';
-	import { CREDENTIALS, AUTH } from '../stores/global';
+	import { CREDENTIALS, AUTH, ID } from '../stores/global';
 	import { beforeUpdate } from 'svelte';
+
+	export let device = '';
 
 	const logout = () => {
 		signOut($AUTH).then(() => {
+			ID.set(undefined);
 			CREDENTIALS.set(undefined);
-			goto('./');
+			goto('/');
 		});
 	};
 
 	let picture: string;
 	let username: string;
-	let uid: string;
 
 	beforeUpdate(() => {
 		if ($CREDENTIALS != undefined) {
-			picture = $CREDENTIALS.user.photoURL;
-			username = $CREDENTIALS.user.displayName;
-			uid = $CREDENTIALS.user.uid;
+			picture = $CREDENTIALS.photoURL;
+			username = $CREDENTIALS.displayName;
 		}
 	});
 </script>
@@ -27,7 +28,7 @@
 <div id="profile">
 	<img src={picture} alt="profile" />
 	<p class="user">{username}</p>
-	<p>{uid}</p>
+	<p>{device}</p>
 	<button on:click={logout}>Logout</button>
 </div>
 

@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { CREDENTIALS } from '../stores/global';
 	import Command from './Command.svelte';
+
+	let name = $CREDENTIALS.displayName;
 </script>
 
 <section>
+	<p>users/{name}</p>
+	<Command />
 	<Command />
 </section>
 

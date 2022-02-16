@@ -1,21 +1,21 @@
 <script>
 	import '../app.css';
-	import { onAuthStateChanged } from 'firebase/auth';
-	import { CREDENTIALS, AUTH } from '../stores/global';
+	import { browserLocalPersistence, onAuthStateChanged } from 'firebase/auth';
+	import { CREDENTIALS, AUTH, ID } from '../stores/global';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-
+	//Ciao bro tvb
 	onMount(() => {
-		if ($CREDENTIALS == undefined) {
-			onAuthStateChanged($AUTH, (user) => {
-				if (user) {
-					CREDENTIALS.set({ user });
-					console.log(`cred from layout: ${user.providerData[0].uid}`);
-				} else {
-					goto('/');
-				}
-			});
-		}
+		$AUTH.setPersistence(browserLocalPersistence);
+		onAuthStateChanged($AUTH, (user) => {
+			if (user) {
+				ID.set(user.providerData[0].uid);
+				CREDENTIALS.set($AUTH.currentUser);
+				console.log(`cred from layout: ${$ID}`);
+			} else {
+				goto('/');
+			}
+		});
 	});
 </script>
 

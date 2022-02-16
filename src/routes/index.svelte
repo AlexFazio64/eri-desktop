@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { AUTH, CREDENTIALS } from '../stores/global';
+	import { AUTH, CREDENTIALS, ID } from '../stores/global';
 	import { goto } from '$app/navigation';
 	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 	const login = () => {
 		signInWithPopup($AUTH, new GoogleAuthProvider()).then((cred) => {
-			CREDENTIALS.set(cred);
+			ID.set($AUTH.currentUser.providerData[0].uid);
+			CREDENTIALS.set(cred.user);
 			goto('./authorized');
 		});
 	};
@@ -44,7 +45,6 @@
 	main {
 		width: 100vw;
 		height: 100vh;
-		/* padding: 3em; */
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -52,7 +52,6 @@
 
 	form {
 		box-shadow: 0px 5px 20px 0px rgb(50 50 50 / 70%);
-		/* border: black 1px solid; */
 		padding: 1.2em;
 		display: flex;
 		flex-direction: column;
