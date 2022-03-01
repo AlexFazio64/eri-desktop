@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { get, ref, set, onValue } from 'firebase/database';
-	import { beforeUpdate } from 'svelte';
-	import { CREDENTIALS, DB, ID } from '../stores/global';
+	import { DB, ID } from '../stores/global';
 
 	let result = '';
 	let value = '';
@@ -16,11 +15,8 @@
 		await set(ref($DB, `users/${$ID}/command`), value);
 	};
 
-	beforeUpdate(() => {
-		if ($CREDENTIALS != undefined)
-			onValue(ref($DB, `users/${$ID}/command`), (data) => {
-				result = data.exists() ? data.val() : result;
-			});
+	onValue(ref($DB, `users/${$ID}/command`), (data) => {
+		result = data.exists() ? data.val() : result;
 	});
 </script>
 

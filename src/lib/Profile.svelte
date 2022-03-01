@@ -26,7 +26,7 @@
 </script>
 
 <div id="profile">
-	<img src={picture} alt="profile" />
+	<img src={picture} alt="profile" referrerpolicy="no-referrer" />
 	<p class="user">{username}</p>
 	<p>{device}</p>
 	<button on:click={logout}>Logout</button>

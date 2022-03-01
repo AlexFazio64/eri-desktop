@@ -20,6 +20,7 @@
 </script>
 
 <svelte:head>
+	<title>Chiara bro</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

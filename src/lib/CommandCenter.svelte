@@ -1,14 +1,29 @@
 <script lang="ts">
-	import { CREDENTIALS } from '../stores/global';
-	import Command from './Command.svelte';
+	import { EXE_PATH } from '../stores/global';
+	import ProgramList from './ProgramList.svelte';
 
-	let name = $CREDENTIALS.displayName;
+	export let name = 'AlexFazio64';
+	const save = () => {
+		const serial = JSON.stringify(Array.from($EXE_PATH.entries()));
+		console.log(serial);
+
+		try {
+			const fs = require('fs');
+			fs.writeFile('program.json', serial, (err) => {
+				if (err) {
+					console.log(err);
+				}
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
 </script>
 
 <section>
 	<p>users/{name}</p>
-	<Command />
-	<Command />
+	<ProgramList />
+	<button on:click={save}>dump to json</button>
 </section>
 
 <style>

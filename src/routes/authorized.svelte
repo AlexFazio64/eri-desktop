@@ -28,8 +28,10 @@
 </script>
 
 <main>
-	<Profile {device} />
-	<CommandCenter />
+	{#if $AUTH.currentUser != undefined}
+		<Profile {device} />
+		<CommandCenter name={$AUTH.currentUser.displayName} />
+	{/if}
 </main>
 
 <style>
@@ -39,6 +41,6 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 3em;
+		gap: 2em;
 	}
 </style>

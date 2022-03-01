@@ -6,6 +6,7 @@ export const DB = writable<Database>();
 export const AUTH = writable<Auth>();
 export const CREDENTIALS = writable<User>();
 export const ID = writable<string>();
+export const EXE_PATH = writable<Map>(new Map());
 
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
