@@ -30,7 +30,7 @@
 <main>
 	{#if $AUTH.currentUser != undefined}
 		<Profile {device} />
-		<CommandCenter name={$AUTH.currentUser.displayName} />
+		<CommandCenter />
 	{/if}
 </main>
 

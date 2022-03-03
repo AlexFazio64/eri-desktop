@@ -1,40 +1,84 @@
 <script lang="ts">
-	import { onValue, ref } from 'firebase/database';
-	import { AUTH, DB } from '../stores/global';
+	import { onValue, ref, set } from 'firebase/database';
+	import { DB, EXE_PATH, ID } from '../stores/global';
 	import Program from './Program.svelte';
 
-	const restored = () => {
+	const programs = new Map<string, {}>();
+
+	try {
 		const fs = require('fs');
-
-		const programs = [
-			['music', { path: '', program: 'spotify' }],
-			['messanging', { path: '', program: 'whatsapp' }],
-			['editing', { path: '', program: 'photoshop' }],
-			['term', { path: '', program: 'powershell' }],
-			['text_editor', { path: '', program: 'vscode' }],
-			['office', { path: '', program: 'word' }],
-			['game_launcher', { path: '', program: 'steam' }]
-		];
-
-		let array = programs;
 		let extracted;
+		extracted = fs.readFileSync('program.json', 'utf8');
+		if (extracted.length > 0) {
+			extracted = JSON.parse(extracted);
+			EXE_PATH.set(new Map<string, {}>(extracted));
+		}
+	} catch (error) {}
 
-		try {
-			extracted = fs.readFileSync('program.json', 'utf8');
-			if (extracted.length > 0) {
-				extracted = JSON.parse(extracted);
-				array = extracted;
-			}
-		} catch (error) {}
+	const restored = () => {
+		programs.set('music', { path: '', program: '' });
+		programs.set('communication', { path: '', program: '' });
+		programs.set('editing', { path: '', program: '' });
+		programs.set('term', { path: '', program: '' });
+		programs.set('text_editor', { path: '', program: '' });
+		programs.set('office', { path: '', program: '' });
+		programs.set('game_launcher', { path: '', program: '' });
+		programs.set('browser', { path: '', program: '' });
 
+		const alias: Map<string, {}> = $EXE_PATH;
+
+		for (const entry of programs.keys()) {
+			if (!alias.has(entry)) alias.set(entry, { path: '', program: '' });
+		}
+
+		const array = Array.from($EXE_PATH);
 		return array;
 	};
 
-	const uid = $AUTH.currentUser.providerData[0].uid;
+	const run = ({ action, params }) => {
+		const fs = require('fs');
+		for (const p of params) {
+			const val = $EXE_PATH.get(p);
+			const { exec } = require('node:child_process');
 
-	onValue(ref($DB, `users/${uid}/command`), (snap) => {
+			const filepath = val['path'];
+			exec(
+				`Start-Process -FilePath "${filepath}" -WindowStyle Maximized`,
+				{ shell: 'powershell' },
+				(e, o, se) => {
+					console.log(e, o, se);
+				}
+			);
+		}
+	};
+
+	const stop = ({ action, params }) => {
+		const fs = require('fs');
+		for (const p of params) {
+			const val = $EXE_PATH.get(p);
+
+			const { exec } = require('node:child_process');
+			const process_name = val['program'];
+
+			exec(`Stop-Process -Name "${process_name}"`, { shell: 'powershell' }, (e, o, se) => {
+				console.log(e ? e : 'action performed');
+			});
+		}
+	};
+
+	onValue(ref($DB, `users/${$ID}/command`), (snap) => {
 		if (snap.exists()) {
-			console.log(snap.val());
+			switch (snap.val().action) {
+				case 'Opening':
+					run(snap.val());
+					break;
+				case 'Closing':
+					stop(snap.val());
+					break;
+				default:
+					break;
+			}
+			set(ref($DB, `users/${$ID}/command`), null);
 		}
 	});
 </script>

@@ -2,7 +2,6 @@
 	import { EXE_PATH } from '../stores/global';
 	import ProgramList from './ProgramList.svelte';
 
-	export let name = 'AlexFazio64';
 	const save = () => {
 		const serial = JSON.stringify(Array.from($EXE_PATH.entries()));
 		console.log(serial);
@@ -21,9 +20,8 @@
 </script>
 
 <section>
-	<p>users/{name}</p>
 	<ProgramList />
-	<button on:click={save}>dump to json</button>
+	<button on:click={save}>save to json</button>
 </section>
 
 <style>

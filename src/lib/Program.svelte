@@ -9,6 +9,7 @@
 				return old;
 			});
 		} else {
+			program = path.match(/((\w+\s*)+).exe$/i)[1];
 			EXE_PATH.update((old) => {
 				old.set(role, { program, path });
 				return old;
@@ -65,11 +66,21 @@
 	on:click={run}
 	on:dragover|stopPropagation|preventDefault={(e) => {}}
 	on:drop|preventDefault|stopPropagation={(e) => {
-		for (const f of e.dataTransfer.files) {
-			console.log(f.path);
-		}
 		path = e.dataTransfer.files[0].path;
-		update_store();
+
+		const { exec } = require('node:child_process');
+
+		if (path.match(/.lnk$/)) {
+			exec('type "' + path + '" | find "\\" | findstr /b "[a-z]:[\\\\]"', (e, o, serr) => {
+				if (e) throw { err: e, stderr: serr };
+				path = o;
+				path = path.replace(/[\r\n]+$/g, '');
+
+				update_store();
+			});
+		} else {
+			update_store();
+		}
 	}}
 >
 	<span>drop here</span>
