@@ -35,7 +35,7 @@
 		return array;
 	};
 
-	const run = ({ action, params }) => {
+	const run_program = ({ action, params }) => {
 		const fs = require('fs');
 		for (const p of params) {
 			const val = $EXE_PATH.get(p);
@@ -52,7 +52,7 @@
 		}
 	};
 
-	const stop = ({ action, params }) => {
+	const stop_program = ({ action, params }) => {
 		const fs = require('fs');
 		for (const p of params) {
 			const val = $EXE_PATH.get(p);
@@ -66,16 +66,34 @@
 		}
 	};
 
+	const media_control = ({ action, params }) => {
+		const { exec } = require('node:child_process');
+		exec(`python .\\media_keys.py ${params}`, (e, o, se) => {
+			console.log(e ? e : 'action performed');
+		});
+	};
+
+	const custom_routine = ({ action, params }) => {
+		const { exec } = require('node:child_process');
+		exec(`python .\\user_scripts\\${params}.py`, (e, o, se) => {
+			console.log(e ? e : 'action performed');
+		});
+	};
+
 	onValue(ref($DB, `users/${$ID}/command`), (snap) => {
 		if (snap.exists()) {
 			switch (snap.val().action) {
 				case 'Opening':
-					run(snap.val());
+					run_program(snap.val());
 					break;
 				case 'Closing':
-					stop(snap.val());
+					stop_program(snap.val());
 					break;
-				default:
+				case 'media':
+					media_control(snap.val());
+					break;
+				case 'custom':
+					custom_routine(snap.val());
 					break;
 			}
 			set(ref($DB, `users/${$ID}/command`), null);
