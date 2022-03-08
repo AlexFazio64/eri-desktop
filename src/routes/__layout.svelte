@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	//Ciao bro tvb
+
 	onMount(() => {
 		$AUTH.setPersistence(browserLocalPersistence);
 		onAuthStateChanged($AUTH, (user) => {
@@ -22,7 +23,6 @@
 
 <svelte:head>
 	<title>?????? bro</title>
-	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <!-- components -->

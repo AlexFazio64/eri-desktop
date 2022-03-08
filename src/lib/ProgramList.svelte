@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Program from './Program.svelte';
 	import { onValue, ref, set } from 'firebase/database';
 	import { DB, EXE_PATH, ID } from '../stores/global';
-	import Program from './Program.svelte';
 
 	const programs = new Map<string, {}>();
 
@@ -36,7 +36,6 @@
 	};
 
 	const run_program = ({ action, params }) => {
-		const fs = require('fs');
 		for (const p of params) {
 			const val = $EXE_PATH.get(p);
 			const { exec } = require('node:child_process');
@@ -109,6 +108,7 @@
 
 <style>
 	.programs {
+		margin: 1em;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr) 2fr 1fr;
 		gap: 1em;

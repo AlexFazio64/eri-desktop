@@ -38,12 +38,12 @@
 								if (err) {
 									console.log(err);
 								}
-								console.log('stdout: ' + stdout);
-								exec('"' + stdout + '"');
+								// console.log('stdout: ' + stdout);
+								exec(`"${stdout}"`);
 							}
 						);
 					} else {
-						exec('"' + path + '"');
+						exec(`"${path}"`);
 					}
 				} else {
 					console.log(err);
@@ -55,14 +55,16 @@
 	};
 </script>
 
-<p>{role}</p>
 <p>{program}</p>
+<p class="category">{role}</p>
+
 <form on:submit|preventDefault={update_store}>
-	<input type="text" bind:value={path} on:blur={update_store} />
+	<input type="text" readonly bind:value={path} on:blur={update_store} />
 </form>
 
 <div
 	class="exe-drop-point"
+	title="drop the executable or link here"
 	on:click={run}
 	on:dragover|stopPropagation|preventDefault={(e) => {}}
 	on:drop|preventDefault|stopPropagation={(e) => {
@@ -75,7 +77,6 @@
 				if (e) throw { err: e, stderr: serr };
 				path = o;
 				path = path.replace(/[\r\n]+$/g, '');
-
 				update_store();
 			});
 		} else {
@@ -83,21 +84,37 @@
 		}
 	}}
 >
-	<span>drop here</span>
+	<span class="material-icons">create_new_folder</span>
 </div>
 
 <style>
+	.category {
+		font-size: 0.8em;
+		color: rgb(110, 110, 110);
+		text-decoration: underline;
+	}
+
+	input[type='text'] {
+		outline: none;
+		border: none;
+		border-bottom: 1px solid black;
+	}
+
 	div.exe-drop-point {
+		cursor: pointer;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		aspect-ratio: 1/1;
 		width: 50px;
-		border: solid 1px rgb(56, 56, 56);
+		border-radius: 4em;
+		border: black 1px solid;
 	}
+
 	span {
 		text-align: center;
 	}
+
 	p {
 		justify-self: baseline;
 	}
