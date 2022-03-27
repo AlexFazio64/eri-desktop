@@ -1,14 +1,11 @@
 <script lang="ts">
 	import Profile from '$lib/Profile.svelte';
 	import CommandCenter from '$lib/CommandCenter.svelte';
-	import { AUTH } from '../stores/global';
 </script>
 
 <main>
-	{#if $AUTH.currentUser != undefined}
-		<Profile/>
-		<CommandCenter />
-	{/if}
+	<Profile />
+	<CommandCenter />
 </main>
 
 <style>

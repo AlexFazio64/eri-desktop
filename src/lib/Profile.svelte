@@ -7,8 +7,8 @@
 	import { onMount } from 'svelte';
 	import { v4 } from '@lukeed/uuid';
 
-	const path = 'users/' + $ID + '/device/name';
-	let device;
+	const path: string = 'users/' + $ID + '/device/name';
+	let device: string;
 	let current_device: boolean = true;
 
 	onMount(() => {
@@ -50,10 +50,8 @@
 	let username: string;
 
 	beforeUpdate(() => {
-		if ($CREDENTIALS != undefined) {
-			picture = $CREDENTIALS.photoURL;
-			username = $CREDENTIALS.displayName;
-		}
+		picture = $CREDENTIALS.photoURL;
+		username = $CREDENTIALS.displayName;
 	});
 </script>
 

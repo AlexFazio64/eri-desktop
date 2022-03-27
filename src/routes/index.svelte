@@ -58,6 +58,7 @@
 		align-items: center;
 		justify-content: center;
 		gap: 1em;
+		border-radius: 1em;
 	}
 
 	.title {

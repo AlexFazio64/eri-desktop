@@ -12,7 +12,7 @@
 			if (user) {
 				ID.set(user.providerData[0].uid);
 				CREDENTIALS.set($AUTH.currentUser);
-				console.log(`cred from layout: ${$ID}`);
+				// console.log(`cred from layout: ${$ID}`);
 				goto('/authorized');
 			} else {
 				goto('/');

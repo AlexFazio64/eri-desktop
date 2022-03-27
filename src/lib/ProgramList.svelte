@@ -7,11 +7,10 @@
 
 	try {
 		const fs = require('fs');
-		let extracted;
+		let extracted: string;
 		extracted = fs.readFileSync('program.json', 'utf8');
 		if (extracted.length > 0) {
-			extracted = JSON.parse(extracted);
-			EXE_PATH.set(new Map<string, {}>(extracted));
+			EXE_PATH.set(new Map<string, {}>(JSON.parse(extracted)));
 		}
 	} catch (error) {}
 
