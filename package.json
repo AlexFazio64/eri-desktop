@@ -10,6 +10,6 @@
   "author": "AlexFazio64",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^17.0.0"
+    "electron": "^22.3.25"
   }
 }
